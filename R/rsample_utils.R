@@ -5,22 +5,22 @@
 #'
 #' @param data Data to use for training and prediction.
 #' @param time_var A character. Name of date/time variable in \code{data}.
-#' @param start A character. Minimum date/time for which predictions will be generated.
-#'  If \code{NULL}, then \code{min(data[[time_var]]) + assess}
+#' @param start A character. Minimum date/time for which predictions will be generated. If
+#'   \code{NULL}, then \code{min(time_var) + assess}
 #' @param end A character. Maximum date/time for which predictions will be generated. If \code{NULL}
-#'   then \code{end = max(data[[time_var]])}.
+#'   then \code{end = max(time_var)}.
 #' @param unit A character string specifying a time unit or a multiple of a unit to nest the data.
-#' Valid base units are \code{second, minute, hour, day, week, month, and year}.
-#' Arbitrary unique English abbreviations as in the \code{period()} constructor
-#' are allowed. Rounding to multiple of units (except weeks) is supported.
+#'   Valid base units are \code{second, minute, hour, day, week, month, and year}. Arbitrary unique
+#'   English abbreviations as in the \code{period()} constructor are allowed. Rounding to multiple
+#'   of units (except weeks) is supported.
 #' @param assess The number of nested date/times used for each assessment resample.
-#' @param skip A integer indicating how many (if any) additional resamples to skip to thin the
-#' total amount of data points in the analysis resample.
+#' @param skip A integer indicating how many (if any) additional resamples to skip to thin the total
+#'   amount of data points in the analysis resample.
 #' @param extend A logical. If \code{TRUE}, when \code{assess > 1} then all observations will be
-#' predicted \code{assess} number of times. For example, if \code{data} has 10 unique observations
-#' after nesting by \code{time_var},
-#' \code{assess = 2}, all observations will be predicted 2 times when \code{extend = TRUE}, whereas
-#' when \code{extend = FALSE} observations 10 and 3 (the default \code{start}) will be predicted only once.
+#'   predicted \code{assess} number of times. For example, if \code{data} has 10 observations after
+#'   nesting by \code{time_var}, \code{assess = 2}, all observations will be predicted 2 times when
+#'   \code{extend = TRUE}, whereas when \code{extend = FALSE} observations 10 and 3 (the default
+#'   \code{start}) will be predicted only once.
 #' @param ... Other arguments passed to \code{rsample::rolling_origin()}.
 #'
 #' @importFrom rsample rolling_origin
@@ -177,11 +177,11 @@ fit_rsample_nested <- function(split = NULL, recipe, model_func, strings_as_fact
 #' @param split An \code{rsplit} object created with \link{rolling_origin_nested}.
 #' @param recipe An untrained recipe object.
 #' @param fit A fitted model object.
-#' @id_vars A character vector of variables names to be returned along with the predictions. Default
+#' @param id_vars A character vector of variables names to be returned along with the predictions. Default
 #'   is to keep all variables.
-#' @predict_options A named list of arguments passed to \code{predict}. For example, if the fitted
+#' @param predict_options A named list of arguments passed to \code{predict}. For example, if the fitted
 #'   model is of class \code{merMod} \code{list(allow.new.levels = TRUE)} may be appropriate.
-#' @add_steps Add steps to end of \code{recipe}.
+#' @param add_steps Add steps to end of \code{recipe}.
 #' @param strings_as_factors A logical: should character columns be converted to factors? This
 #'   affects the preprocessed training set (when retain = TRUE) as well as the results of
 #'   bake.recipe. Unlike \code{prep()}, the default is \code{FALSE}.

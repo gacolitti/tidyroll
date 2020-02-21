@@ -2,8 +2,6 @@
 output: github_document
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -21,14 +19,17 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/gacolitti/tidyroll/branch/master/graph/badge.svg)](https://codecov.io/gh/gacolitti/tidyroll?branch=master)
 <!-- badges: end -->
 
-The goal of tidyroll is to ...
+`tidyroll` makes it easy to work with irregular time slices for modeling and prediciton with `tidymodels`.
+
+The main function `rolling_origin_nested()` is a wrapper around `rsample::rolling_origin` and facilitates
+rolling over different time units instead of a fixed window. The motivation for this function comes
+from this [vignette](https://tidymodels.github.io/rsample/articles/Applications/Time_Series.html). 
 
 ## Installation
 
-You can install the released version of tidyroll from [CRAN](https://CRAN.R-project.org) with:
-
-``` r
-install.packages("tidyroll")
+```{r, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("gacolitti/tidyroll")
 ```
 
 ## Example
@@ -37,21 +38,17 @@ This is a basic example which shows you how to solve a common problem:
 
 ```{r example}
 library(tidyroll)
-## basic example code
+library(dplyr)
+library(rsample)
+data("airquality")
+
+airquality$date <- as.Date(paste("2019", airquality$Month, airquality$Day, sep = "-"))
+
+roll <- rolling_origin_nested(data = airquality, time_var = "date", unit = "month")
+roll
+
+analysis(roll$splits[[1]])
+assessment(roll$splits[[1]])
+
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
-```{r cars}
-summary(cars)
-```
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!
