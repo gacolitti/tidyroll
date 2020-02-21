@@ -181,7 +181,7 @@ fit_rsample_nested <- function(split = NULL, recipe, model_func, strings_as_fact
 #'   is to keep all variables.
 #' @param predict_options A named list of arguments passed to \code{predict}. For example, if the fitted
 #'   model is of class \code{merMod} \code{list(allow.new.levels = TRUE)} may be appropriate.
-#' @param add_steps Add steps to end of \code{recipe}.
+#' @param add_steps Add steps to end of \code{recipe} before \code{bake}. Not currently implemented.
 #' @param strings_as_factors A logical: should character columns be converted to factors? This
 #'   affects the preprocessed training set (when retain = TRUE) as well as the results of
 #'   bake.recipe. Unlike \code{prep()}, the default is \code{FALSE}.
