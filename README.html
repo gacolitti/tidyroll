@@ -650,7 +650,35 @@ body {
 <a class="sourceLine" id="cb2-35" title="35"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
 <a class="sourceLine" id="cb2-36" title="36"><span class="co">#&gt;   .date                         data</span></a>
 <a class="sourceLine" id="cb2-37" title="37"><span class="co">#&gt;   &lt;dttm&gt;              &lt;list&lt;df[,7]&gt;&gt;</span></a>
-<a class="sourceLine" id="cb2-38" title="38"><span class="co">#&gt; 1 2019-06-01 00:00:00       [32 x 7]</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-38" title="38"><span class="co">#&gt; 1 2019-06-01 00:00:00       [32 x 7]</span></a>
+<a class="sourceLine" id="cb2-39" title="39"></a>
+<a class="sourceLine" id="cb2-40" title="40"><span class="kw">assessment</span>(roll<span class="op">$</span>splits[[<span class="dv">1</span>]])<span class="op">$</span>data</a>
+<a class="sourceLine" id="cb2-41" title="41"><span class="co">#&gt; &lt;list_of&lt;</span></a>
+<a class="sourceLine" id="cb2-42" title="42"><span class="co">#&gt;   tbl_df&lt;</span></a>
+<a class="sourceLine" id="cb2-43" title="43"><span class="co">#&gt;     date   : datetime&lt;local&gt;</span></a>
+<a class="sourceLine" id="cb2-44" title="44"><span class="co">#&gt;     Ozone  : integer</span></a>
+<a class="sourceLine" id="cb2-45" title="45"><span class="co">#&gt;     Solar.R: integer</span></a>
+<a class="sourceLine" id="cb2-46" title="46"><span class="co">#&gt;     Wind   : double</span></a>
+<a class="sourceLine" id="cb2-47" title="47"><span class="co">#&gt;     Temp   : integer</span></a>
+<a class="sourceLine" id="cb2-48" title="48"><span class="co">#&gt;     Month  : integer</span></a>
+<a class="sourceLine" id="cb2-49" title="49"><span class="co">#&gt;     Day    : integer</span></a>
+<a class="sourceLine" id="cb2-50" title="50"><span class="co">#&gt;   &gt;</span></a>
+<a class="sourceLine" id="cb2-51" title="51"><span class="co">#&gt; &gt;[1]&gt;</span></a>
+<a class="sourceLine" id="cb2-52" title="52"><span class="co">#&gt; [[1]]</span></a>
+<a class="sourceLine" id="cb2-53" title="53"><span class="co">#&gt; # A tibble: 32 x 7</span></a>
+<a class="sourceLine" id="cb2-54" title="54"><span class="co">#&gt;    date                Ozone Solar.R  Wind  Temp Month   Day</span></a>
+<a class="sourceLine" id="cb2-55" title="55"><span class="co">#&gt;    &lt;dttm&gt;              &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb2-56" title="56"><span class="co">#&gt;  1 2019-05-16 17:00:00    34     307  12      66     5    17</span></a>
+<a class="sourceLine" id="cb2-57" title="57"><span class="co">#&gt;  2 2019-05-17 17:00:00     6      78  18.4    57     5    18</span></a>
+<a class="sourceLine" id="cb2-58" title="58"><span class="co">#&gt;  3 2019-05-18 17:00:00    30     322  11.5    68     5    19</span></a>
+<a class="sourceLine" id="cb2-59" title="59"><span class="co">#&gt;  4 2019-05-19 17:00:00    11      44   9.7    62     5    20</span></a>
+<a class="sourceLine" id="cb2-60" title="60"><span class="co">#&gt;  5 2019-05-20 17:00:00     1       8   9.7    59     5    21</span></a>
+<a class="sourceLine" id="cb2-61" title="61"><span class="co">#&gt;  6 2019-05-21 17:00:00    11     320  16.6    73     5    22</span></a>
+<a class="sourceLine" id="cb2-62" title="62"><span class="co">#&gt;  7 2019-05-22 17:00:00     4      25   9.7    61     5    23</span></a>
+<a class="sourceLine" id="cb2-63" title="63"><span class="co">#&gt;  8 2019-05-23 17:00:00    32      92  12      61     5    24</span></a>
+<a class="sourceLine" id="cb2-64" title="64"><span class="co">#&gt;  9 2019-05-24 17:00:00    NA      66  16.6    57     5    25</span></a>
+<a class="sourceLine" id="cb2-65" title="65"><span class="co">#&gt; 10 2019-05-25 17:00:00    NA     266  14.9    58     5    26</span></a>
+<a class="sourceLine" id="cb2-66" title="66"><span class="co">#&gt; # ... with 22 more rows</span></a></code></pre></div>
 
 </body>
 </html>

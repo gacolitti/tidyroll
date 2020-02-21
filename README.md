@@ -72,4 +72,32 @@ assessment(roll$splits[[1]])
 #>   .date                         data
 #>   <dttm>              <list<df[,7]>>
 #> 1 2019-06-01 00:00:00       [32 x 7]
+
+assessment(roll$splits[[1]])$data
+#> <list_of<
+#>   tbl_df<
+#>     date   : datetime<local>
+#>     Ozone  : integer
+#>     Solar.R: integer
+#>     Wind   : double
+#>     Temp   : integer
+#>     Month  : integer
+#>     Day    : integer
+#>   >
+#> >[1]>
+#> [[1]]
+#> # A tibble: 32 x 7
+#>    date                Ozone Solar.R  Wind  Temp Month   Day
+#>    <dttm>              <int>   <int> <dbl> <int> <int> <int>
+#>  1 2019-05-16 17:00:00    34     307  12      66     5    17
+#>  2 2019-05-17 17:00:00     6      78  18.4    57     5    18
+#>  3 2019-05-18 17:00:00    30     322  11.5    68     5    19
+#>  4 2019-05-19 17:00:00    11      44   9.7    62     5    20
+#>  5 2019-05-20 17:00:00     1       8   9.7    59     5    21
+#>  6 2019-05-21 17:00:00    11     320  16.6    73     5    22
+#>  7 2019-05-22 17:00:00     4      25   9.7    61     5    23
+#>  8 2019-05-23 17:00:00    32      92  12      61     5    24
+#>  9 2019-05-24 17:00:00    NA      66  16.6    57     5    25
+#> 10 2019-05-25 17:00:00    NA     266  14.9    58     5    26
+#> # ... with 22 more rows
 ```

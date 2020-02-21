@@ -209,16 +209,6 @@ predict_rsample_nested <- function(split,
 
   baked_assessment <- tryCatch({
 
-    # Impute sample data if sample date is greater than pred date
-    rec <- recipe %>%
-      step_mutate_at(
-        contains("_per"),
-        contains("sample"),-sample_date,
-        fn = ~ ifelse(sample_date < .pred_date, ., as.numeric(NA))
-      ) %>%
-      step_meanimpute(contains("_per"), sample_weight, contains("sample_dbh")) %>%
-      check_missing(all_predictors())
-
     bake(prep(rec, training = bind_rows(analysis(split)$data),
                        strings_as_factors = strings_as_factors),
                   new_data = bind_rows(assessment(split)$data))

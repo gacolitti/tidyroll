@@ -50,5 +50,6 @@ roll
 analysis(roll$splits[[1]])
 assessment(roll$splits[[1]])
 
+assessment(roll$splits[[1]])$data
 ```
 
