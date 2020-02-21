@@ -27,4 +27,6 @@ Imports:
     Gmisc,
     rsample,
     dplyr,
-    tidyr
+    tidyr,
+    lubridate,
+    rlang
