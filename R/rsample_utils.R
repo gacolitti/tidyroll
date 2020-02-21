@@ -24,11 +24,10 @@
 #' @param ... Other arguments passed to \code{rsample::rolling_origin()}.
 #'
 #' @importFrom rsample rolling_origin
-#' @importFrom lubridate period
-#' @importFrom lubridate round_date
+#' @importFrom lubridate period round_date
 #' @importFrom dplyr sym
-#' @importFrom tidyr complete
-#' @importFrom tidyr nest
+#' @importFrom tidyr complete nest
+#' @importFrom rlang := .data
 #'
 #' @details
 #'
@@ -90,7 +89,7 @@ rolling_origin_nested <- function(data,
   data <- data[order(data[[time_var]]), ]
 
   data$.date <- round_date(data[[time_var]], unit = unit)
-  data <- nest(.data = data, data = -c(.date))
+  data <- nest(.data = data, data = -c(.data$.date))
   initial <- which(data$.date == round_date(start, unit = unit))[1]
 
   rolling_origin(data = data, initial = initial, assess = assess, skip = skip, ...)
@@ -142,9 +141,7 @@ prepper_nested <- function(split, recipe, strings_as_factors = FALSE, ...) {
 #'
 #' @importFrom dplyr bind_rows
 #' @importFrom rsample analysis
-#' @importFrom recipes prep
-#' @importFrom recipes juice
-#' @importFrom recipes fully_trained
+#' @importFrom recipes prep juice fully_trained
 #' @importFrom Gmisc fastDoCall
 #'
 #' @details
@@ -186,14 +183,11 @@ fit_rsample_nested <- function(split = NULL, recipe, model_func, strings_as_fact
 #'   affects the preprocessed training set (when retain = TRUE) as well as the results of
 #'   bake.recipe. Unlike \code{prep()}, the default is \code{FALSE}.
 #'
-#' @importFrom rsample analysis
-#' @importFrom rsample assessment
-#' @importFrom dplyr bind_rows
-#' @importFrom recipes bake
-#' @importFrom recipes prep
-#' @importFrom dplyr as_tibble
-#' @importFrom dplyr tibble
+#' @importFrom rsample analysis assessment
+#' @importFrom recipes bake prep
+#' @importFrom dplyr as_tibble tibble bind_rows
 #' @importFrom Gmisc fastDoCall
+#' @importFrom stats formula predict
 #'
 #'@export
 predict_rsample_nested <- function(split,
@@ -205,11 +199,11 @@ predict_rsample_nested <- function(split,
                                    strings_as_factors = FALSE) {
 
   # Get prediction date using the maximum date from the analysis data
-  .pred_date <- max(analysis(split_obj)$.date, na.rm = TRUE)
+  .pred_date <- max(analysis(split)$.date, na.rm = TRUE)
 
   baked_assessment <- tryCatch({
 
-    bake(prep(rec, training = bind_rows(analysis(split)$data),
+    bake(prep(recipe, training = bind_rows(analysis(split)$data),
                        strings_as_factors = strings_as_factors),
                   new_data = bind_rows(assessment(split)$data))
   },
@@ -220,11 +214,11 @@ predict_rsample_nested <- function(split,
   if (nrow(baked_assessment) == 0) return()
 
   if (is.null(predict_options)) {
-    .pred <- predict(object = fit_obj, newdata = baked_assessment)
+    .pred <- predict(object = fit, newdata = baked_assessment)
   } else {
     .pred <-
       fastDoCall(predict, c(
-        list(object = fit_obj, newdata = baked_assessment),
+        list(object = fit, newdata = baked_assessment),
         predict_options
       ))
   }
