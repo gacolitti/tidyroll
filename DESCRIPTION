@@ -24,7 +24,6 @@ Depends:
 Language: en-US
 Imports: 
     recipes,
-    Gmisc,
     rsample,
     dplyr,
     tidyr,

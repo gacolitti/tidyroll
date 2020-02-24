@@ -142,7 +142,7 @@ prepper_nested <- function(split, recipe, strings_as_factors = FALSE, ...) {
 #' @importFrom dplyr bind_rows
 #' @importFrom rsample analysis
 #' @importFrom recipes prep juice fully_trained
-#' @importFrom Gmisc fastDoCall
+#' @importFrom rlang exec
 #'
 #' @details
 #'
@@ -162,7 +162,7 @@ fit_rsample_nested <- function(split = NULL, recipe, model_func, strings_as_fact
   args <- list(...)
   if (!"formula" %in% names(args)) args$formula <- formula(prepped_rec)
   args$data <- juice(prepped_rec)
-  fastDoCall(model_func, args)
+  exec(model_func, !!!args)
 }
 
 #' Predict assessment data from nested split using recipe and model fit
@@ -186,7 +186,7 @@ fit_rsample_nested <- function(split = NULL, recipe, model_func, strings_as_fact
 #' @importFrom rsample analysis assessment
 #' @importFrom recipes bake prep
 #' @importFrom dplyr as_tibble tibble bind_rows
-#' @importFrom Gmisc fastDoCall
+#' @importFrom rlang exec
 #' @importFrom stats formula predict
 #'
 #'@export
@@ -216,11 +216,8 @@ predict_rsample_nested <- function(split,
   if (is.null(predict_options)) {
     .pred <- predict(object = fit, newdata = baked_assessment)
   } else {
-    .pred <-
-      fastDoCall(predict, c(
-        list(object = fit, newdata = baked_assessment),
-        predict_options
-      ))
+    args <- c(list(object = fit, newdata = baked_assessment), predict_options)
+    .pred <- exec(predict, !!!args)
   }
 
 
