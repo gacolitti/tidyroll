@@ -1,12 +1,11 @@
 Package: tidyroll
-Title: What the Package Does (One Line, Title Case)
+Title: Time-Series Prediction with Irregular Time Slices using Tidymodels
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Giovanni",
+           family = "Colitti",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           email = "gacolitti@gmail.com")
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Suggests: 
