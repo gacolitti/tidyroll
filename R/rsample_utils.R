@@ -152,7 +152,7 @@ prepper_nested <- function(split, recipe, strings_as_factors = FALSE, ...) {
 #' @export
 fit_rsample_nested <- function(split = NULL, recipe, model_func, strings_as_factors = FALSE, ...) {
 
-  if (fully_trained(recipe)) {
+  if (fully_trained(recipe) & nrow(recipe$template) > 0) {
     prepped_rec <- recipe
   } else {
     if (is.null(split)) stop("split cannot be missing because recipe is not trained")
@@ -162,7 +162,7 @@ fit_rsample_nested <- function(split = NULL, recipe, model_func, strings_as_fact
   args <- list(...)
   if (!"formula" %in% names(args)) args$formula <- formula(prepped_rec)
   args$data <- juice(prepped_rec)
-  exec(model_func, !!!args)
+  do_call(model_func, args)
 }
 
 #' Predict assessment data from nested split using recipe and model fit
@@ -178,10 +178,24 @@ fit_rsample_nested <- function(split = NULL, recipe, model_func, strings_as_fact
 #'   is to keep all variables.
 #' @param predict_options A named list of arguments passed to \code{predict}. For example, if the fitted
 #'   model is of class \code{merMod} \code{list(allow.new.levels = TRUE)} may be appropriate.
-#' @param add_steps Add steps to end of \code{recipe} before \code{bake}. Not currently implemented.
+#' @param add_steps A tibble with two list columns: "step" for the name of the step and "args"
+#'   for a list of named arguments for each step. This argument adds steps to end of
+#'   \code{recipe} before \code{bake}. This is useful if you want to add steps based on prediction date
+#'   For example, perhaps some predictors are observed at a specific
+#'   time; so depending on the prediction date, these data cannot be used for prediction. This
+#'   argument can be used to impute observations that use data after the predicted date.
+#'   Reference the predicted date with \code{.pred.date}. See details below for an example.
 #' @param strings_as_factors A logical: should character columns be converted to factors? This
 #'   affects the preprocessed training set (when retain = TRUE) as well as the results of
 #'   bake.recipe. Unlike \code{prep()}, the default is \code{FALSE}.
+#'
+#' @details
+#'
+#' This is an exmaple of how to add a series of steps to the end of the recipe:
+#'
+#'
+#'
+#'
 #'
 #' @importFrom rsample analysis assessment
 #' @importFrom recipes bake prep
@@ -217,7 +231,7 @@ predict_rsample_nested <- function(split,
     .pred <- predict(object = fit, newdata = baked_assessment)
   } else {
     args <- c(list(object = fit, newdata = baked_assessment), predict_options)
-    .pred <- exec(predict, !!!args)
+    .pred <- do_call(predict, args)
   }
 
 

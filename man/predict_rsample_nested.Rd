@@ -27,7 +27,13 @@ is to keep all variables.}
 \item{predict_options}{A named list of arguments passed to \code{predict}. For example, if the fitted
 model is of class \code{merMod} \code{list(allow.new.levels = TRUE)} may be appropriate.}
 
-\item{add_steps}{Add steps to end of \code{recipe} before \code{bake}. Not currently implemented.}
+\item{add_steps}{A tibble with two list columns: "step" for the name of the step and "args"
+for a list of named arguments for each step. This argument adds steps to end of
+\code{recipe} before \code{bake}. This is useful if you want to add steps based on prediction date
+For example, perhaps some predictors are observed at a specific
+time; so depending on the prediction date, these data cannot be used for prediction. This
+argument can be used to impute observations that use data after the predicted date.
+Reference the predicted date with \code{.pred.date}. See details below for an example.}
 
 \item{strings_as_factors}{A logical: should character columns be converted to factors? This
 affects the preprocessed training set (when retain = TRUE) as well as the results of
@@ -37,4 +43,7 @@ bake.recipe. Unlike \code{prep()}, the default is \code{FALSE}.}
 This function facilitates extracting, baking, and predicting \code{assessment} data from a nested
 split object created with \code{rolling_origin_nested}. Baking requires a \code{recipe} object
 and predicting requires a fitted model object.
+}
+\details{
+This is an exmaple of how to add a series of steps to the end of the recipe:
 }
