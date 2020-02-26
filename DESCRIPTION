@@ -28,4 +28,5 @@ Imports:
     dplyr,
     tidyr,
     lubridate,
-    rlang
+    rlang,
+    purrr
