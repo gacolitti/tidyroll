@@ -1,3 +1,4 @@
+library(testthat)
 library(tidyroll)
 library(recipes)
 library(dplyr)
@@ -11,15 +12,15 @@ roll2 <- roll %>% mutate(recipe = list(rec))
 roll2$fits <- map2(roll2$splits, roll2$recipe, fit_rsample_nested, model_func = lm)
 roll2$predictions <- pmap(lst(split = roll2$splits, recipe = roll2$recipe, fit = roll2$fits), predict_rsample_nested)
 
-testthat::test_that("rolling_origin_nested returns rolling origin object", {
+test_that("rolling_origin_nested returns rolling origin object", {
   expect_match(class(roll)[1], "rolling_origin")
 })
 
-testthat::test_that("fit_rsample_nested returns fits", {
+test_that("fit_rsample_nested returns fits", {
   expect_match(class(roll2$fits[[1]]), "lm")
 })
 
-testthat::test_that("predict_rsample_nested returns predictions", {
+test_that("predict_rsample_nested returns predictions", {
   expect_equal(nrow(roll2$predictions[[1]]), 32)
   expect_equal(nrow(roll2$predictions[[5]]), 14)
   expect_equal(ncol(roll2$predictions[[1]]), 5)
