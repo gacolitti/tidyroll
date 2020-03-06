@@ -208,7 +208,10 @@ predict_rsample_nested <- function(split,
   .pred_date <- max(analysis(split)$.date, na.rm = TRUE)
 
   if (!is.null(new_steps)) {
-    recipe_new <- add_steps(recipe, new_steps)
+    recipe_new <- recipe
+    for (i in seq_along(new_steps)) {
+      recipe_new <- eval_tidy(expr(recipe_new %>% !!new_steps[[i]]))
+    }
   } else {
     recipe_new <- recipe
   }
