@@ -22,3 +22,4 @@
 #'
 #' @examples
 #' data(airquality2)
+"airquality2"
