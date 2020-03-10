@@ -53,7 +53,7 @@ roll
 analysis(roll$splits[[1]]) %>% tail()
 assessment(roll$splits[[1]]) %>% head()
 
-analysis(roll$splits[[1]])$data %>% tail()
-assessment(roll$splits[[1]])$data %>% head()
+analysis(roll$splits[[1]])$data %>% last() %>% tail()
+assessment(roll$splits[[1]])$data %>% first() %>% head()
 ```
 
