@@ -34,9 +34,9 @@ devtools::install_github("gacolitti/tidyroll")
 ## Example
 
 ```{r example}
-library(tidyroll)
-library(dplyr)
-library(rsample)
+suppressPackageStartupMessages(library(tidyroll))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(rsample))
 
 data("airquality2")
 
