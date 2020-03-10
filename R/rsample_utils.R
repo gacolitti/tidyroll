@@ -45,10 +45,10 @@ rolling_origin_nested <- function(data,
                                   extend = FALSE,
                                   assess = 1,
                                   skip = 0,
-                                  time_var_collapse = "round",
+                                  time_var_collapse = "floor",
                                   ...) {
 
-  if(inherits(data[[time_var]], 'Date')) data[[time_var]] <- as.POSIXct(data[[time_var]])
+  if(inherits(data[[time_var]], 'Date')) data[[time_var]] <- as.POSIXct(format(data[[time_var]]))
   stopifnot(inherits(data[[time_var]], 'POSIXt'))
 
   # If start is NULL use minimum time_var plus assess

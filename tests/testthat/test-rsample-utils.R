@@ -8,7 +8,10 @@ data("airquality2")
 
 set.seed(1)
 
-roll <- rolling_origin_nested(data = airquality2, time_var = "date", unit = "week")
+roll <- rolling_origin_nested(data = airquality2,
+                              time_var = "date",
+                              unit = "week",
+                              time_var_collapse = "round")
 rec <- recipe(data = airquality2 %>% slice(0), ozone ~ temp + ozone_sample + ozone_sample_date) %>%
   update_role(ozone_sample_date, new_role = "id")
 
