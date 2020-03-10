@@ -10,7 +10,9 @@
 \code{[,2] solar_rad} numeric solar radiation (long)
 \code{[,3] wind} numeric wind (mph)
 \code{[,4] temp} numeric temperature (degrees F)
-\code{[,5] date} (Y-mm-dd)}
+\code{[,5] date} (Y-mm-dd)
+\code{[,6] ozone_sample} numeric fake ozone measurement before \code{date}
+\code{[,7] ozone_sample_date} (Y-mm-dd) date for fake ozone measurement that precedes \code{date}}
 \source{
 Chambers, J. M., Cleveland, W. S., Kleiner, B. and Tukey, P. A. (1983) Graphical Methods for Data Analysis. Belmont, CA: Wadsworth.
 }

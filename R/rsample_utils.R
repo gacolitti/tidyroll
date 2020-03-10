@@ -180,11 +180,11 @@ fit_rsample_nested <- function(split = NULL, recipe, model_func, strings_as_fact
 #'   model is of class \code{merMod} \code{list(allow.new.levels = TRUE)} may be appropriate.
 #' @param new_steps A sequence of steps created using \code{expr} or \code{exprs} from \code{rlang}.
 #'   This argument adds steps to end of a \code{recipe} before \code{bake}.
-#'   This is useful if you want to add steps based on prediction date
+#'   This is useful if you want to add steps based on the prediction date.
 #'   For example, perhaps some predictors are observed at a specific
 #'   time; so depending on the prediction date, these data cannot be used for prediction. This
 #'   argument can be used to impute observations that use data after the predicted date.
-#'   Reference the predicted date with \code{.pred.date}.
+#'   Reference the predicted date with \code{pred.date}.
 #' @param strings_as_factors A logical: should character columns be converted to factors? This
 #'   affects the preprocessed training set (when retain = TRUE) as well as the results of
 #'   bake.recipe. Unlike \code{prep()}, the default is \code{FALSE}.
@@ -205,13 +205,14 @@ predict_rsample_nested <- function(split,
                                    strings_as_factors = FALSE) {
 
   # Get prediction date using the maximum date from the analysis data
-  .pred_date <- max(analysis(split)$.date, na.rm = TRUE)
+  pred_date <- max(analysis(split)$.date, na.rm = TRUE)
 
   if (!is.null(new_steps)) {
-    recipe_new <- recipe
-    for (i in seq_along(new_steps)) {
-      recipe_new <- eval_tidy(expr(recipe_new %>% !!new_steps[[i]]))
-    }
+    # recipe_new <- recipe
+    # for (i in seq_along(new_steps)) {
+    #   recipe_new <- eval_tidy(expr(recipe_new %>% !!new_steps[[i]]))
+    # }
+    recipe_new <- add_steps(recipe, new_steps)
   } else {
     recipe_new <- recipe
   }
@@ -229,22 +230,22 @@ predict_rsample_nested <- function(split,
   if (nrow(baked_assessment) == 0) return()
 
   if (is.null(predict_options)) {
-    .pred <- predict(object = fit, newdata = baked_assessment)
+    pred <- predict(object = fit, newdata = baked_assessment)
   } else {
     args <- c(list(object = fit, newdata = baked_assessment), predict_options)
-    .pred <- do_call(predict, args)
+    pred <- do_call(predict, args)
   }
 
 
   if (is.null(id_vars)) {
-    res <- tibble(.pred_date, .pred)
+    res <- tibble(pred_date, pred)
   } else if (id_vars[1] == "all") {
     res <-
       as_tibble(
         cbind(
           baked_assessment,
-          .pred_date = .pred_date,
-          .pred = .pred,
+          .pred_date = pred_date,
+          .pred = pred,
           stringsAsFactors = FALSE
         )
       )
@@ -253,8 +254,8 @@ predict_rsample_nested <- function(split,
       as_tibble(
         cbind(
           baked_assessment[, id_vars],
-          .pred_date = .pred_date,
-          .pred = .pred,
+          .pred_date = pred_date,
+          .pred = pred,
           stringsAsFactors = FALSE
         )
       )

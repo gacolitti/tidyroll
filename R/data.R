@@ -13,6 +13,8 @@
 #' \code{[,3] wind} numeric wind (mph)
 #' \code{[,4] temp} numeric temperature (degrees F)
 #' \code{[,5] date} (Y-mm-dd)
+#' \code{[,6] ozone_sample} numeric fake ozone measurement before \code{date}
+#' \code{[,7] ozone_sample_date} (Y-mm-dd) date for fake ozone measurement that precedes \code{date}
 #'
 #' @keywords datasets
 #'

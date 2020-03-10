@@ -28,4 +28,6 @@ Imports:
     tidyr,
     lubridate,
     rlang,
-    purrr
+    purrr,
+    magrittr,
+    tibble

@@ -29,11 +29,11 @@ model is of class \code{merMod} \code{list(allow.new.levels = TRUE)} may be appr
 
 \item{new_steps}{A sequence of steps created using \code{expr} or \code{exprs} from \code{rlang}.
 This argument adds steps to end of a \code{recipe} before \code{bake}.
-This is useful if you want to add steps based on prediction date
+This is useful if you want to add steps based on the prediction date.
 For example, perhaps some predictors are observed at a specific
 time; so depending on the prediction date, these data cannot be used for prediction. This
 argument can be used to impute observations that use data after the predicted date.
-Reference the predicted date with \code{.pred.date}.}
+Reference the predicted date with \code{pred.date}.}
 
 \item{strings_as_factors}{A logical: should character columns be converted to factors? This
 affects the preprocessed training set (when retain = TRUE) as well as the results of

@@ -17,16 +17,17 @@ Add one or more steps to the end of a recipe object in sequence.
 }
 \examples{
 
-\dontrun{
- .pred_date <- as.Date("2015-01-15")
- mtcars2 <- mtcars \%>\% mutate(hp_date = as.Date("2015-01-01"))
- mtcars2$hp_date[1:2] <- as.Date("2015-02-01")
- rec1 <- recipe(mtcars2, mpg ~ hp + hp_date)
- new_steps <- exprs(
-   step_mutate(hp = ifelse(hp_date < .pred_date, hp, as.numeric(NA))),
+library(recipes)
+library(rlang)
+
+pred_date <- as.Date("2015-01-15")
+mtcars2 <- mtcars \%>\% mutate(hp_date = as.Date("2015-01-01"))
+mtcars2$hp_date[1:2] <- as.Date("2015-02-01")
+rec1 <- recipe(mtcars2, mpg ~ hp + hp_date)
+new_steps <- exprs(
+   step_mutate(hp = ifelse(hp_date < pred_date, hp, as.numeric(NA))),
    step_meanimpute(hp)
-  )
- rec2 <- add_steps_to_recipe(rec1, new_steps)
-}
+)
+rec2 <- add_steps(rec1, new_steps)
 
 }
