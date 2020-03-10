@@ -13,6 +13,7 @@ rolling_origin_nested(
   extend = FALSE,
   assess = 1,
   skip = 0,
+  time_var_collapse = "floor",
   ...
 )
 }
@@ -42,6 +43,10 @@ nesting by \code{time_var}, \code{assess = 2}, all observations will be predicte
 
 \item{skip}{A integer indicating how many (if any) additional resamples to skip to thin the total
 amount of data points in the analysis resample.}
+
+\item{time_var_collapse}{One of \code{"floor"}, \code{"ceiling"}, or \code{"round"}. This
+argument controls how \code{time_var} is collapsed prior to nesting. The options refer
+to the respective \code{lubridate} functions. For example, see \code{?lubridate::floor_date}.}
 
 \item{...}{Other arguments passed to \code{rsample::rolling_origin()}.}
 }

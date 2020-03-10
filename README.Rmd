@@ -14,7 +14,6 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![CRAN status](https://www.r-pkg.org/badges/version/tidyroll)](https://CRAN.R-project.org/package=tidyroll)
 [![Travis build status](https://travis-ci.org/gacolitti/tidyroll.svg?branch=master)](https://travis-ci.org/gacolitti/tidyroll)
 [![Codecov test coverage](https://codecov.io/gh/gacolitti/tidyroll/branch/master/graph/badge.svg)](https://codecov.io/gh/gacolitti/tidyroll?branch=master)
 <!-- badges: end -->
@@ -40,16 +39,23 @@ This is a basic example which shows you how to solve a common problem:
 library(tidyroll)
 library(dplyr)
 library(rsample)
-data("airquality")
 
-airquality$date <- as.Date(paste("2019", airquality$Month, airquality$Day, sep = "-"))
+data("airquality2")
 
-roll <- rolling_origin_nested(data = airquality, time_var = "date", unit = "month")
+roll <- rolling_origin_nested(
+  data = airquality2, 
+  time_var = "date", 
+  unit = "week", 
+  assess = 3,
+  start = mean(airquality2$date, na.rm = TRUE),
+  end = NULL
+)
 roll
 
-analysis(roll$splits[[1]])
-assessment(roll$splits[[1]])
+analysis(roll$splits[[1]]) %>% tail()
+assessment(roll$splits[[1]]) %>% head()
 
-assessment(roll$splits[[1]])$data
+analysis(roll$splits[[1]])$data %>% tail()
+assessment(roll$splits[[1]])$data %>% head()
 ```
 

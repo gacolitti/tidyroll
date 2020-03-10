@@ -21,10 +21,13 @@
 #'   nesting by \code{time_var}, \code{assess = 2}, all observations will be predicted 2 times when
 #'   \code{extend = TRUE}, whereas when \code{extend = FALSE} observations 10 and 3 (the default
 #'   \code{start}) will be predicted only once.
+#' @param time_var_collapse One of \code{"floor"}, \code{"ceiling"}, or \code{"round"}. This
+#'   argument controls how \code{time_var} is collapsed prior to nesting. The options refer
+#'   to the respective \code{lubridate} functions. For example, see \code{?lubridate::floor_date}.
 #' @param ... Other arguments passed to \code{rsample::rolling_origin()}.
 #'
 #' @importFrom rsample rolling_origin
-#' @importFrom lubridate period round_date
+#' @importFrom lubridate period floor_date ceiling_date round_date
 #' @importFrom dplyr sym
 #' @importFrom tidyr complete nest
 #' @importFrom rlang := .data
@@ -42,6 +45,7 @@ rolling_origin_nested <- function(data,
                                   extend = FALSE,
                                   assess = 1,
                                   skip = 0,
+                                  time_var_collapse = "round",
                                   ...) {
 
   if(inherits(data[[time_var]], 'Date')) data[[time_var]] <- as.POSIXct(data[[time_var]])
@@ -88,9 +92,17 @@ rolling_origin_nested <- function(data,
 
   data <- data[order(data[[time_var]]), ]
 
-  data$.date <- round_date(data[[time_var]], unit = unit)
+  if (time_var_collapse == "floor") {
+    collapse_fun <- floor_date
+  } else if (time_var_collapse == "ceiling") {
+    collapse_fun <- ceiling_date
+  } else if (time_var_collapse == "round") {
+    collapse_fun <- round_date
+  }
+
+  data$.date <- collapse_fun(data[[time_var]], unit = unit)
   data <- nest(.data = data, data = -c(.data$.date))
-  initial <- which(data$.date == round_date(start, unit = unit))[1]
+  initial <- which(data$.date == collapse_fun(start, unit = unit))[1]
 
   rolling_origin(data = data, initial = initial, assess = assess, skip = skip, ...)
 }

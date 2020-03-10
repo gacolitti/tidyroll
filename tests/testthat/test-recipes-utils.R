@@ -13,7 +13,7 @@ rec <- recipe(data = airquality2, ozone ~ temp + ozone_sample + ozone_sample_dat
   step_naomit(all_predictors()) %>%
   step_normalize(all_predictors())
 
-new_steps <- exprs(step_poly(ozone_sample), step_log(temp))
+new_steps <- exprs(step_poly(ozone_sample), step_log(ozone))
 
 test_that("add_steps returns recipe", {
   expect_error(add_steps(rec, new_steps), NA)
