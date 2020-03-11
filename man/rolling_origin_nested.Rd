@@ -13,7 +13,7 @@ rolling_origin_nested(
   extend = FALSE,
   assess = 1,
   skip = 0,
-  time_var_collapse = "round",
+  time_var_collapse = "floor",
   ...
 )
 }

@@ -40,15 +40,15 @@ test_that("predict_rsample_nested returns predictions", {
       predict_rsample_nested
     )
 
-  expect_equal(nrow(roll2$predictions[[1]]), 8)
-  expect_equal(nrow(roll2$predictions[[2]]), 8)
+  expect_equal(nrow(roll2$predictions[[1]]), 7)
+  expect_equal(nrow(roll2$predictions[[2]]), 7)
 
   expect_equal(ncol(roll2$predictions[[1]]), 6)
   expect_equal(ncol(roll2$predictions[[2]]), 6)
 
-  expect_equal(roll2$predictions[[1]]$.pred[1] %>% round(1), 74.6)
-  expect_that(roll2$predictions[[1]]$.pred[2], is.na)
-  expect_equal(roll2$predictions[[1]]$.pred[3] %>% round(1), 37.8)
+  expect_equal(roll2$predictions[[1]]$.pred[1] %>% round(1), 34.2)
+  expect_equal(roll2$predictions[[1]]$.pred[2] %>% round(1), 26.5)
+  expect_equal(roll2$predictions[[1]]$.pred[3] %>% round(1), 20.1)
 })
 
 test_that("predict_rsample_nested can add steps to recipe", {
@@ -68,12 +68,12 @@ test_that("predict_rsample_nested can add steps to recipe", {
         step_meanimpute(ozone_sample))
     )
 
-  expect_equal(nrow(roll2$predictions2[[1]]), 8)
-  expect_equal(nrow(roll2$predictions2[[2]]), 8)
+  expect_equal(nrow(roll2$predictions2[[1]]), 7)
+  expect_equal(nrow(roll2$predictions2[[2]]), 7)
 
   expect_equal(ncol(roll2$predictions2[[1]]), 6)
   expect_equal(ncol(roll2$predictions2[[2]]), 6)
 
-  expect_equal(roll2$predictions2[[1]]$.pred[1] %>% round(1), 74.6)
-  expect_equal(roll2$predictions2[[4]]$.pred[1] %>% round(1), 14.4)
+  expect_equal(roll2$predictions2[[1]]$.pred[1] %>% round(1), 34.2)
+  expect_equal(roll2$predictions2[[4]]$.pred[1] %>% round(1), 42.9)
 })
