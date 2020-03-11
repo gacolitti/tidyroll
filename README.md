@@ -39,64 +39,54 @@ data("airquality2")
 roll <- rolling_origin_nested(
   data = airquality2, 
   time_var = "date", 
-  unit = "week", 
-  assess = 3,
-  start = mean(airquality2$date, na.rm = TRUE),
-  end = NULL
+  unit = "month", 
+  start = "2017-08-01",
+  end = "2017-11-01",
+  assess = 1
 )
 roll
 #> # Rolling origin forecast resampling 
-#> # A tibble: 9 x 2
-#>   splits         id    
-#>   <list>         <chr> 
-#> 1 <split [12/3]> Slice1
-#> 2 <split [13/3]> Slice2
-#> 3 <split [14/3]> Slice3
-#> 4 <split [15/3]> Slice4
-#> 5 <split [16/3]> Slice5
-#> 6 <split [17/3]> Slice6
-#> 7 <split [18/3]> Slice7
-#> 8 <split [19/3]> Slice8
-#> 9 <split [20/3]> Slice9
+#> # A tibble: 3 x 2
+#>   splits        id    
+#>   <list>        <chr> 
+#> 1 <split [4/1]> Slice1
+#> 2 <split [5/1]> Slice2
+#> 3 <split [6/1]> Slice3
 
 analysis(roll$splits[[1]]) %>% tail()
-#> # A tibble: 6 x 2
+#> # A tibble: 4 x 2
 #>   .date                         data
 #>   <dttm>              <list<df[,7]>>
-#> 1 2017-06-11 00:00:00        [7 x 7]
-#> 2 2017-06-18 00:00:00        [7 x 7]
-#> 3 2017-06-25 00:00:00        [7 x 7]
-#> 4 2017-07-02 00:00:00        [7 x 7]
-#> 5 2017-07-09 00:00:00        [7 x 7]
-#> 6 2017-07-16 00:00:00        [7 x 7]
+#> 1 2017-05-01 00:00:00       [31 x 7]
+#> 2 2017-06-01 00:00:00       [30 x 7]
+#> 3 2017-07-01 00:00:00       [31 x 7]
+#> 4 2017-08-01 00:00:00       [31 x 7]
 assessment(roll$splits[[1]]) %>% head()
-#> # A tibble: 3 x 2
+#> # A tibble: 1 x 2
 #>   .date                         data
 #>   <dttm>              <list<df[,7]>>
-#> 1 2017-07-23 00:00:00        [7 x 7]
-#> 2 2017-07-30 00:00:00        [7 x 7]
-#> 3 2017-08-06 00:00:00        [7 x 7]
+#> 1 2017-09-01 00:00:00       [30 x 7]
 
 analysis(roll$splits[[1]])$data %>% last() %>% tail()
 #> # A tibble: 6 x 7
 #>   date                ozone solar_rad  wind  temp ozone_sample
 #>   <dttm>              <int>     <int> <dbl> <int>        <dbl>
-#> 1 2017-07-13 17:00:00    NA       291  14.9    91         NA  
-#> 2 2017-07-14 17:00:00     7        48  14.3    80         45.6
-#> 3 2017-07-15 17:00:00    48       260   6.9    81         50.8
-#> 4 2017-07-16 17:00:00    35       274  10.3    82         54.7
-#> 5 2017-07-17 17:00:00    61       285   6.3    84         72.3
-#> 6 2017-07-18 17:00:00    79       187   5.1    87         65.5
+#> 1 2017-08-26 00:00:00    73       215   8      86         70.1
+#> 2 2017-08-27 00:00:00    NA       153   5.7    88         NA  
+#> 3 2017-08-28 00:00:00    76       203   9.7    97         74.6
+#> 4 2017-08-29 00:00:00   118       225   2.3    94         91.2
+#> 5 2017-08-30 00:00:00    84       237   6.3    96        120. 
+#> 6 2017-08-31 00:00:00    85       188   6.3    94         79.0
 #> # ... with 1 more variable: ozone_sample_date <date>
 assessment(roll$splits[[1]])$data %>% first() %>% head()
 #> # A tibble: 6 x 7
 #>   date                ozone solar_rad  wind  temp ozone_sample
 #>   <dttm>              <int>     <int> <dbl> <int>        <dbl>
-#> 1 2017-07-19 17:00:00    63       220  11.5    85         56.5
-#> 2 2017-07-20 17:00:00    16         7   6.9    74         39.7
-#> 3 2017-07-21 17:00:00    NA       258   9.7    81         NA  
-#> 4 2017-07-22 17:00:00    NA       295  11.5    82         NA  
-#> 5 2017-07-23 17:00:00    80       294   8.6    86         97.4
-#> 6 2017-07-24 17:00:00   108       223   8      85        107. 
+#> 1 2017-09-01 00:00:00    96       167   6.9    91         86.6
+#> 2 2017-09-02 00:00:00    78       197   5.1    92         77.9
+#> 3 2017-09-03 00:00:00    73       183   2.8    93         96.3
+#> 4 2017-09-04 00:00:00    91       189   4.6    93         86.4
+#> 5 2017-09-05 00:00:00    47        95   7.4    87         60.9
+#> 6 2017-09-06 00:00:00    32        92  15.5    84         34.9
 #> # ... with 1 more variable: ozone_sample_date <date>
 ```

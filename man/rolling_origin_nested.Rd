@@ -13,7 +13,7 @@ rolling_origin_nested(
   extend = FALSE,
   assess = 1,
   skip = 0,
-  time_var_collapse = "floor",
+  round_fun = lubridate::floor_date,
   ...
 )
 }
@@ -22,11 +22,11 @@ rolling_origin_nested(
 
 \item{time_var}{A character. Name of date/time variable in \code{data}.}
 
-\item{start}{A character. Minimum date/time for which predictions will be generated. If
-\code{NULL}, then \code{min(time_var) + assess}}
+\item{start}{A character. Defines maximum date for observations in the analysis
+group of the first split. If \code{NULL}, then \code{min(time_var) + assess}}
 
-\item{end}{A character. Maximum date/time for which predictions will be generated. If \code{NULL}
-then \code{end = max(time_var)}.}
+\item{end}{A character. Defines maximum date/time in the assessment group of the last split.
+If \code{NULL} then \code{end = max(time_var)}.}
 
 \item{unit}{A character string specifying a time unit or a multiple of a unit to nest the data.
 Valid base units are \code{second, minute, hour, day, week, month, and year}. Arbitrary unique
@@ -44,9 +44,10 @@ nesting by \code{time_var}, \code{assess = 2}, all observations will be predicte
 \item{skip}{A integer indicating how many (if any) additional resamples to skip to thin the total
 amount of data points in the analysis resample.}
 
-\item{time_var_collapse}{One of \code{"floor"}, \code{"ceiling"}, or \code{"round"}. This
-argument controls how \code{time_var} is collapsed prior to nesting. The options refer
-to the respective \code{lubridate} functions. For example, see \code{?lubridate::floor_date}.}
+\item{round_fun}{One of \code{floor_date}, \code{ceiling_date}, or \code{round_date} from
+the \code{lubridate} package. Default is to use \code{floor_date}. This
+argument controls how \code{time_var} is binned into time chunks.
+See \code{?lubridate::floor_date}.}
 
 \item{...}{Other arguments passed to \code{rsample::rolling_origin()}.}
 }

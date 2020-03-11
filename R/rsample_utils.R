@@ -5,10 +5,10 @@
 #'
 #' @param data Data to use for training and prediction.
 #' @param time_var A character. Name of date/time variable in \code{data}.
-#' @param start A character. Minimum date/time for which predictions will be generated. If
-#'   \code{NULL}, then \code{min(time_var) + assess}
-#' @param end A character. Maximum date/time for which predictions will be generated. If \code{NULL}
-#'   then \code{end = max(time_var)}.
+#' @param start A character. Defines maximum date for observations in the analysis
+#'   group of the first split. If \code{NULL}, then \code{min(time_var) + assess}
+#' @param end A character. Defines maximum date/time in the assessment group of the last split.
+#'   If \code{NULL} then \code{end = max(time_var)}.
 #' @param unit A character string specifying a time unit or a multiple of a unit to nest the data.
 #'   Valid base units are \code{second, minute, hour, day, week, month, and year}. Arbitrary unique
 #'   English abbreviations as in the \code{period()} constructor are allowed. Rounding to multiple
@@ -21,9 +21,10 @@
 #'   nesting by \code{time_var}, \code{assess = 2}, all observations will be predicted 2 times when
 #'   \code{extend = TRUE}, whereas when \code{extend = FALSE} observations 10 and 3 (the default
 #'   \code{start}) will be predicted only once.
-#' @param time_var_collapse One of \code{"floor"}, \code{"ceiling"}, or \code{"round"}. This
-#'   argument controls how \code{time_var} is collapsed prior to nesting. The options refer
-#'   to the respective \code{lubridate} functions. For example, see \code{?lubridate::floor_date}.
+#' @param round_fun One of \code{floor_date}, \code{ceiling_date}, or \code{round_date} from
+#'   the \code{lubridate} package. Default is to use \code{floor_date}. This
+#'   argument controls how \code{time_var} is binned into time chunks.
+#'   See \code{?lubridate::floor_date}.
 #' @param ... Other arguments passed to \code{rsample::rolling_origin()}.
 #'
 #' @importFrom rsample rolling_origin
@@ -45,10 +46,10 @@ rolling_origin_nested <- function(data,
                                   extend = FALSE,
                                   assess = 1,
                                   skip = 0,
-                                  time_var_collapse = "floor",
+                                  round_fun = lubridate::floor_date,
                                   ...) {
 
-  if(inherits(data[[time_var]], 'Date')) data[[time_var]] <- as.POSIXct(format(data[[time_var]]))
+  if (inherits(data[[time_var]], 'Date')) data[[time_var]] <- as.POSIXct(format(data[[time_var]]))
   stopifnot(inherits(data[[time_var]], 'POSIXt'))
 
   # If start is NULL use minimum time_var plus assess
@@ -59,11 +60,11 @@ rolling_origin_nested <- function(data,
 
   # If end is NULL use max time_var
   if (is.null(end)) {
-    end <- max(data[[time_var]], na.rm = TRUE)
+    end <- max(format(data[[time_var]]), na.rm = TRUE)
   }
 
-  start <- as.POSIXct(start)
-  end <- as.POSIXct(end)
+  start <- as.POSIXct(format(start))
+  end <- as.POSIXct(format(end))
 
   if (start > max(data[[time_var]], na.rm = TRUE)) {
     stop("start > max(time_var)", call. = FALSE)
@@ -83,7 +84,7 @@ rolling_origin_nested <- function(data,
   data <- data[data[[time_var]] <= end | is.na(data[[time_var]]), ]
 
   data <- complete(
-    data = data, !!sym(time_var) := seq(
+    data = data, !!sym(time_var) := seq.POSIXt(
       start,
       end,
       by = unit
@@ -92,17 +93,9 @@ rolling_origin_nested <- function(data,
 
   data <- data[order(data[[time_var]]), ]
 
-  if (time_var_collapse == "floor") {
-    collapse_fun <- floor_date
-  } else if (time_var_collapse == "ceiling") {
-    collapse_fun <- ceiling_date
-  } else if (time_var_collapse == "round") {
-    collapse_fun <- round_date
-  }
-
-  data$.date <- collapse_fun(data[[time_var]], unit = unit)
+  data$.date <- round_fun(data[[time_var]], unit = unit)
   data <- nest(.data = data, data = -c(.data$.date))
-  initial <- which(data$.date == collapse_fun(start, unit = unit))[1]
+  initial <- which(data$.date == round_fun(start, unit = unit))[1]
 
   rolling_origin(data = data, initial = initial, assess = assess, skip = skip, ...)
 }

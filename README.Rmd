@@ -43,10 +43,10 @@ data("airquality2")
 roll <- rolling_origin_nested(
   data = airquality2, 
   time_var = "date", 
-  unit = "week", 
-  assess = 3,
-  start = mean(airquality2$date, na.rm = TRUE),
-  end = NULL
+  unit = "month", 
+  start = "2017-08-01",
+  end = "2017-11-01",
+  assess = 1
 )
 roll
 
