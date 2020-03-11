@@ -54,7 +54,7 @@ rolling_origin_nested <- function(data,
   # If start is NULL use minimum time_var plus assess
   if (is.null(start)) {
     start <- min(data[[time_var]], na.rm = TRUE)
-    start <- as.POSIXct(start) + assess
+    start <- start + period(assess, units = unit)
   }
 
   # If end is NULL use max time_var
