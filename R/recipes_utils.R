@@ -46,15 +46,19 @@ add_steps <- function(recipe, new_steps) {
 #' @param x Numeric vector to normalize.
 #' @param recipe Trained recipe object.
 #' @param var Variable name in the recipe object.
+#' @param index Determines which \code{step_normlize} to use.
+#'   If \code{step_normalize} is called twice, you will
+#'   need to specify \code{index = 2} to extract the information from the second
+#'   \code{step_normalize}.
 #'
 #' @importFrom recipes fully_trained
 #' @importFrom dplyr pull
 #'
 #' @export
-unnormalize <- function(x, recipe, var) {
+unnormalize <- function(x, recipe, var, index = 1) {
   if (!fully_trained(recipe)) stop("`recipe` must be trained first with `prep`.")
-  var_sd <- extract_step_item(recipe, "step_normalize", "sds") %>% pull(var)
-  var_mean <- extract_step_item(recipe, "step_normalize", "means") %>% pull(var)
+  var_sd <- extract_step_item(recipe, step = "step_normalize", item = "sds", index = index) %>% pull(var)
+  var_mean <- extract_step_item(recipe, step = "step_normalize", item = "means", index = index) %>% pull(var)
 
   (x * var_sd) + var_mean
 }
@@ -66,15 +70,19 @@ unnormalize <- function(x, recipe, var) {
 #' @param x Numeric vector to normalize.
 #' @param recipe Trained recipe object.
 #' @param var Variable name in the recipe object.
+#' @param index Determines which \code{step_normlize} to use.
+#'   If \code{step_normalize} is called twice, you will
+#'   need to specify \code{index = 2} to extract the information from the second
+#'   \code{step_normalize}.
 #'
 #' @importFrom recipes fully_trained
 #' @importFrom dplyr pull
 #'
 #' @export
-normalize <- function(x, recipe, var) {
+normalize <- function(x, recipe, var, index = 1) {
   if (!fully_trained(recipe)) stop("`recipe` must be trained first with `prep`.")
-  var_sd <- extract_step_item(recipe, "step_normalize", "sds") %>% pull(var)
-  var_mean <- extract_step_item(recipe, "step_normalize", "means") %>% pull(var)
+  var_sd <- extract_step_item(recipe, step = "step_normalize", item = "sds", index = index) %>% pull(var)
+  var_mean <- extract_step_item(recipe, step = "step_normalize", item = "means", index = index) %>% pull(var)
 
   (x - var_mean) / var_sd
 }
@@ -86,18 +94,29 @@ normalize <- function(x, recipe, var) {
 #' @param recipe Trained recipe object.
 #' @param step Step from trained recipe.
 #' @param item Item from trained recipe.
+#' @param index If multiple steps of the same class, which step do you want to extract
+#'   the item from? For example, if \code{step_normalize} is called twice, you will
+#'   need to specify \code{index = 2} to extract the information from the second
+#'   \code{step_normalize}.
 #' @param enframe_item Should the step item be enframed?
 #'
 #' @importFrom recipes fully_trained
 #' @importFrom purrr map_chr
 #' @importFrom tidyr spread
 #' @importFrom tibble enframe
+#' @importFrom magrittr extract extract2
 #'
 #' @export
-extract_step_item <- function(recipe, step, item, enframe_item = TRUE) {
+extract_step_item <- function(recipe, step, item, index = 1, enframe_item = TRUE) {
   if (!fully_trained(recipe)) stop("`recipe` must be trained first with `prep`.")
 
-  d <- recipe$steps[[which(map_chr(recipe$steps, ~ class(.)[1]) == step)]][[item]]
+  d <- recipe %>%
+    extract2("steps")
+
+  d <- d %>%
+    extract(which(map_lgl(d, ~class(.x)[1] == step))) %>%
+    extract2(index) %>%
+    extract2(item)
 
   if (enframe_item) {
     enframe(d) %>% spread(key = 1, value = 2)

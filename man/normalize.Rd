@@ -4,7 +4,7 @@
 \alias{normalize}
 \title{Normalize variable}
 \usage{
-normalize(x, recipe, var)
+normalize(x, recipe, var, index = 1)
 }
 \arguments{
 \item{x}{Numeric vector to normalize.}
@@ -12,6 +12,11 @@ normalize(x, recipe, var)
 \item{recipe}{Trained recipe object.}
 
 \item{var}{Variable name in the recipe object.}
+
+\item{index}{Determines which \code{step_normlize} to use.
+If \code{step_normalize} is called twice, you will
+need to specify \code{index = 2} to extract the information from the second
+\code{step_normalize}.}
 }
 \description{
 Normalizes variable using standard deviation and mean from a recipe object. See \code{?recipes}.

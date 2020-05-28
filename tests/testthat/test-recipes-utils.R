@@ -21,6 +21,6 @@ test_that("add_steps returns recipe", {
 })
 
 test_that("normalize and unnormalize function properly", {
-  expect_equal(normalize(airquality2$temp, prep(rec), "temp")[1] %>% round(2), -1.15)
-  expect_equal(unnormalize(-1.15, prep(rec), var = "temp") %>% round(1), airquality2$temp[1])
+  expect_equal(normalize(x = airquality2$temp, recipe = prep(rec), var = "temp")[1] %>% round(2), -1.15)
+  expect_equal(unnormalize(x = -1.15, recipe = prep(rec), var = "temp") %>% round(1), airquality2$temp[1])
 })
