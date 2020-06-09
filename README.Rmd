@@ -50,8 +50,8 @@ roll <- rolling_origin_nested(
 )
 roll
 
-analysis(roll$splits[[1]]) %>% tail()
-assessment(roll$splits[[1]]) %>% head()
+analysis(roll$splits[[1]]) 
+assessment(roll$splits[[1]]) 
 
 analysis(roll$splits[[1]])$data %>% last() %>% tail()
 assessment(roll$splits[[1]])$data %>% first() %>% head()
