@@ -33,7 +33,7 @@ This is useful if you want to add steps based on the prediction date.
 For example, perhaps some predictors are observed at a specific
 time; so depending on the prediction date, these data cannot be used for prediction. This
 argument can be used to impute observations that use data after the predicted date.
-Reference the predicted date with \code{pred.date}.}
+Reference the predicted date with \code{pred_date} (see examples).}
 
 \item{strings_as_factors}{A logical: should character columns be converted to factors? This
 affects the preprocessed training set (when retain = TRUE) as well as the results of
@@ -43,4 +43,41 @@ bake.recipe. Unlike \code{prep()}, the default is \code{FALSE}.}
 This function facilitates extracting, baking, and predicting \code{assessment} data from a nested
 split object created with \code{rolling_origin_nested}. Baking requires a \code{recipe} object
 and predicting requires a fitted model object.
+}
+\examples{
+
+\dontrun{
+data(airquality2)
+
+roll <- rolling_origin_nested(
+  data = airquality2,
+  time_var = "date",
+  unit = "week",
+  round_fun = lubridate::round_date
+)
+rec <-
+  recipe(data = airquality2 \%>\% slice(0), ozone ~ temp + ozone_sample + ozone_sample_date) \%>\%
+  update_role(ozone_sample_date, new_role = "id")
+
+roll2 <- roll \%>\% mutate(recipe = list(rec))
+
+roll2$fits <-
+  map2(roll2$splits, roll2$recipe, fit_rsample_nested, model_func = lm)
+
+roll2$predictions <-
+ pmap(
+   lst(
+    split = roll2$splits,
+    recipe = roll2$recipe,
+    fit = roll2$fits
+  ),
+  predict_rsample_nested,
+  new_steps = exprs(
+    step_mutate_at(
+      ozone_sample,
+      fn = ~ if_else(ozone_sample_date < pred_date, ozone_sample, as.numeric(NA))),
+    step_meanimpute(ozone_sample))
+)
+}
+
 }

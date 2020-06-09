@@ -8,16 +8,20 @@ data("airquality2")
 
 set.seed(1)
 
-roll <- rolling_origin_nested(data = airquality2,
-                              time_var = "date",
-                              unit = "week",
-                              round_fun = lubridate::round_date)
-rec <- recipe(data = airquality2 %>% slice(0), ozone ~ temp + ozone_sample + ozone_sample_date) %>%
+roll <- rolling_origin_nested(
+  data = airquality2,
+  time_var = "date",
+  unit = "week",
+  round_fun = lubridate::round_date
+)
+rec <-
+  recipe(data = airquality2 %>% slice(0), ozone ~ temp + ozone_sample + ozone_sample_date) %>%
   update_role(ozone_sample_date, new_role = "id")
 
 roll2 <- roll %>% mutate(recipe = list(rec))
 
-roll2$fits <- map2(roll2$splits, roll2$recipe, fit_rsample_nested, model_func = lm)
+roll2$fits <-
+  map2(roll2$splits, roll2$recipe, fit_rsample_nested, model_func = lm)
 
 
 test_that("rolling_origin_nested returns rolling origin object", {
