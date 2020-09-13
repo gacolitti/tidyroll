@@ -5,18 +5,18 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![Travis build
-status](https://travis-ci.org/gacolitti/tidyroll.svg?branch=master)](https://travis-ci.org/gacolitti/tidyroll)
 [![Codecov test
 coverage](https://codecov.io/gh/gacolitti/tidyroll/branch/master/graph/badge.svg)](https://codecov.io/gh/gacolitti/tidyroll?branch=master)
+[![R build
+status](https://github.com/gacolitti/tidyroll/workflows/R-CMD-check/badge.svg)](https://github.com/gacolitti/tidyroll/actions)
 <!-- badges: end -->
 
-`tidyroll` makes it easy to work with irregular series for modeling
+`tidyroll` makes it easy to work with irregular time slices for modeling
 and prediciton with `tidymodels`.
 
 The main function `rolling_origin_nested()` is a wrapper around
 `rsample::rolling_origin` and facilitates rolling over different time
-units instead of a fixed window. This is useful when you want to cross-validate panel data with a time series component, there are gaps/missing data in a time series, or you want to roll over irregular time units like months that have varying numbers of days. The motivation for this function comes
+units instead of a fixed window. The motivation for this function comes
 from this
 [vignette](https://tidymodels.github.io/rsample/articles/Applications/Time_Series.html).
 
@@ -32,9 +32,8 @@ devtools::install_github("gacolitti/tidyroll")
 ``` r
 suppressPackageStartupMessages(library(tidyroll))
 suppressPackageStartupMessages(library(dplyr))
-#> Warning: package 'dplyr' was built under R version 3.6.2
 suppressPackageStartupMessages(library(rsample))
-#> Warning: package 'rsample' was built under R version 3.6.2
+#> Warning: package 'rsample' was built under R version 4.0.2
 
 data("airquality2")
 

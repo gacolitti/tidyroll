@@ -14,8 +14,8 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![Travis build status](https://travis-ci.org/gacolitti/tidyroll.svg?branch=master)](https://travis-ci.org/gacolitti/tidyroll)
 [![Codecov test coverage](https://codecov.io/gh/gacolitti/tidyroll/branch/master/graph/badge.svg)](https://codecov.io/gh/gacolitti/tidyroll?branch=master)
+[![R build status](https://github.com/gacolitti/tidyroll/workflows/R-CMD-check/badge.svg)](https://github.com/gacolitti/tidyroll/actions)
 <!-- badges: end -->
 
 `tidyroll` makes it easy to work with irregular time slices for modeling and prediciton with `tidymodels`.
